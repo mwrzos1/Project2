@@ -1,8 +1,7 @@
 //Question #1
 //function to determine if the integer is a prime number
 def primeNumbers(n: Int): Boolean = {
-  n >1 &&
-    (2 until n). forall (n % _ != 0)
+  n >1 && (2 until n). forall (n % _ != 0)
 }
 
 primeNumbers(5)
@@ -25,7 +24,7 @@ twinPrimes(39,37)
 twinPrimes(34,45)
 
 //Question #3
-// function to sort the list from 3 to n
+// function to return an integer list of all the twin primes
 def TwinPrimesList(n:Int): List[Int] = {
   primeslisthelper(n).sortBy(3 until n)
 
@@ -44,15 +43,19 @@ def primeslisthelper(n:Int) :List[Int] = n match {
 TwinPrimesList(50)
 
 //Question #4
+// function that takes even integer greater than 2 and returns this number as a sum of two prime numbers
+def goldbachConjecture(n:Int):  Unit ={
 
-def goldbachConjecture(n:Int): Unit ={
-  { n match {
-    case n if n <= 2   => println (" It must be greater than 2 ")
-    case n if n %2 ==1 => println(" It has to be an integer ")
-    case _  if 
+    n match {
+        //make sure number greater than 2
+    case n if n <= 2   => println (" Input must be greater than 2 for goldbachConjecture")
+      //make sure the number it's not an integer
+    case n if n %2 ==1 => println(" Input can't be a prime number for goldbachConjecture ")
+    case _  => ( 3 until n).foreach(x=> if (primeNumbers(x) && primeNumbers(n-x))
+      println(x + " + " + (n-x) + " = " +n))
     }
   }
+  goldbachConjecture(28)
 
 
 
-}
