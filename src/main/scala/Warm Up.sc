@@ -46,6 +46,13 @@ TwinPrimesList(50)
 //Question #4
 
 def goldbachConjecture(n:Int): Unit ={
+  { n match {
+    case n if n <= 2   => println (" It must be greater than 2 ")
+    case n if n %2 ==1 => println(" It has to be an integer ")
+    case _  if 
+    }
+  }
+
 
 
 }
