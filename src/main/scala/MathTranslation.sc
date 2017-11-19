@@ -21,6 +21,7 @@ def go(aList: List[String]) : Unit = {
   numbers(endList)
   println()
   println("Addition: ")
+  numbers
   println("Multiplication: ")
 }
 
@@ -69,4 +70,15 @@ def numbers (endList: List[Int]): Unit = {
   }
 }
 
+//this method only adds the numbers together
+def sumOfNumbers (endList: List[Int] ): Int = endList match {
 
+    case Nil => 0
+    case head :: tail =>
+      head + sumOfNumbers(tail)
+}
+
+//this method displays for example "1+9+6+8"
+def displaySum (endList: List [Int] ): Unit = {
+
+}
