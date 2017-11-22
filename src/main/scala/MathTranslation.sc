@@ -14,15 +14,17 @@ go(List("yi", "Josh" , "three" , "si"))
 
 def go(aList: List[String]) : Unit = {
 
-  var myList: List[Int] = convert(aList)
-  var endList: List [Int] = myList.filter(_ < 11)
+  val myList: List[Int] = convert(aList)
+  val endList: List [Int] = myList.filter(_ > -1) // filter the numbers anything not between <0 and 10> gets discarded
 
-  print("Translation:")
-  numbers(endList)
+  println("Translation:" + numbers(endList))
   println()
-  println("Addition: ")
-  numbers
-  println("Multiplication: ")
+  print("Addition:" +  displaySum(endList))
+  print(" = "+ sumOfNumbers(endList))
+  println()
+  println("Multiplication:" + displayMult(endList))
+  print(" = "+ multiplicationOfNumbers(endList))
+
 }
 
 def convert(aList: List[String]): List[Int] = {
@@ -57,15 +59,16 @@ def LanguagetoNumbers(words: String): Int = {
     case "ten" => 10
     case _ => -1
   }
+
 }
+
 // recursive function to print numbers after conversion
 def numbers (endList: List[Int]): Unit = {
 
   endList.nonEmpty match {
-    case true => {
+    case true =>
       print(endList.head + " ")
       numbers(endList.tail)
-    }
     case false => Nil
   }
 }
@@ -81,4 +84,37 @@ def sumOfNumbers (endList: List[Int] ): Int = endList match {
 //this method displays for example "1+9+6+8"
 def displaySum (endList: List [Int] ): Unit = {
 
+  (endList.nonEmpty , endList.length != 1) match {
+    case (false, _) => Nil
+    case (true, true) => print(endList.head + " + ")
+      displaySum(endList.tail)
+    case (true, false) => {
+      print(endList.head)
+      displayMult(endList.tail)
+    }
+  }
+}
+// this method multiplies the numbers
+def multiplicationOfNumbers(endList: List [Int]): Int = endList match{
+
+  case Nil => 1
+  case head :: tail =>
+    head * multiplicationOfNumbers(tail)
+}
+
+
+// this method displays 1*9*6**8
+def displayMult (endList: List [Int] ): Unit = {
+
+  (endList.nonEmpty , endList.length != 1) match {
+    case (false, _) => Nil
+    case (true, true) => {
+      print(endList.head + " * ")
+      displayMult(endList.tail)
+    }
+    case (true, false) => {
+      print(endList.head)
+      displayMult(endList.tail)
+    }
+  }
 }
