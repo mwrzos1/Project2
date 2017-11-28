@@ -27,22 +27,73 @@ val test6ExectedSolution: List[Int] = List(1, 1, 0, 0, 0, 1)
 
 // This function does the binary addition when there are uneven lists and still must
 // finish the add with the carry bits.
-def finishBinaryAdd(remainingBits: List[Boolean], carryBit: Boolean): List[Boolean] = ???
-
+def finishBinaryAdd(remainingBits: List[Boolean], carryBit: Boolean): List[Boolean] = {
+  remainingBits match {
+    case Nil =>
+      carryBit match {
+        case true => List{true}
+        case false => Nil
+      }
+    case head::tail =>
+      head match {
+        case _ =>
+          carryBit match {
+            case true => !head :: finishBinaryAdd(tail, head)
+            case false => remainingBits
+          }
+      }
+  }
+}
 // This function determines what the next carry bit should be based on current bits.
-def getNextCarryBit(pBit: Boolean, qBit: Boolean, carryBit: Boolean): Boolean = ???
+def getNextCarryBit(pBit: Boolean, qBit: Boolean, carryBit: Boolean): Boolean = {
+  (pBit && qBit) || ((pBit ^ qBit) && carryBit)
+}
 
 // This function does the binary addition of two Booleans and a carry bit.
-def addBits(pBit: Boolean, qBit: Boolean, carryBit: Boolean): Boolean = ???
+def addBits(pBit: Boolean, qBit: Boolean, carryBit: Boolean): Boolean ={
+  (pBit ^ qBit) ^ carryBit
+}
 
 // This function does the binary addition of two boolean lists. Note that the lists may not be equal in length.
-def doBinaryAddition(pBits: List[Boolean], qBits: List[Boolean], carryBit: Boolean): List[Boolean] = ???
+def doBinaryAddition(pBits: List[Boolean], qBits: List[Boolean], carryBit: Boolean): List[Boolean] = {
+  smaller(pBits, qBits).isEmpty match {
+    case true => finishBinaryAdd(bigger(pBits,qBits), carryBit)
+    case false =>addBits(pBits.head, qBits.head, carryBit)::doBinaryAddition(pBits.tail, qBits.tail, getNextCarryBit(pBits.head, qBits.head, carryBit))
+  }
+}
 
+//if same size lists return pBits
+def smaller(pBits: List[Boolean], qBits: List[Boolean]): List[Boolean] ={
+  pBits.length.equals(qBits.length) match {
+    case true => pBits
+    case false =>
+      pBits.length < qBits.length match {
+        case true => pBits
+        case false => qBits
+      }
+  }
+}
+//if same size lists return pBits
+def bigger(pBits: List[Boolean], qBits: List[Boolean]): List[Boolean] ={
+  pBits.length.equals(qBits.length) match {
+    case true => pBits
+    case false =>
+      pBits.length > qBits.length match {
+        case true => pBits
+        case false => qBits
+      }
+  }
+}
 // This function converts a binary integer list into its corresponding boolean list.
-def convertIntListToBooleanList(intList: List[Int]) = ???
+def convertIntListToBooleanList(intList: List[Int]) = {
+  intList.map (x => if (x==0) false  else true).reverse
+}
 
 // This function converts a boolean list into its corresponding binary integer list.
-def convertBooleanListToIntList(booleanList: List[Boolean]) = ???
+def convertBooleanListToIntList(booleanList: List[Boolean]) =
+{
+  booleanList.map (x => if (x==true) 1 else 0).reverse
+}
 
 /* This is the "main" function to do binary addition. This function should:
     1. Convert the input parameter lists from integers to boolean. Use Scala reverse
@@ -52,9 +103,20 @@ def convertBooleanListToIntList(booleanList: List[Boolean]) = ???
     5. Convert the answer back to binary integer form for output.
   Note that the initial carry bit is assumed to be 0 (i.e., false).
 */
-def binaryAddition(pList: List[Int], qList: List[Int]) = ???
+def binaryAddition(pList: List[Int], qList: List[Int]) = {
 
-// def bindarySubtraction(pList: List[Int], qList: List[Int]) = ???
+  convertBooleanListToIntList(doBinaryAddition(convertIntListToBooleanList(pList), convertIntListToBooleanList(qList), false))
+}
+def binarySubtraction(pList: List[Int], qList: List[Int]): List[Int] = {
+
+binaryAddition(pList, twoComplements(qList))
+}
+// it doesn't work properly
+def twoComplements(ints: List[Int]): List[Int] ={
+  val nlist: List[Int]= List(1)
+  binaryAddition(convertBooleanListToIntList(convertIntListToBooleanList(ints).map(x=> !x)), nlist)
+
+}
 
 // Testing binary addition.
 if (binaryAddition(pTest1, qTest1).equals(test1ExectedSolution)) println("Test 1 passes!") else println("Test 1 fails.")
